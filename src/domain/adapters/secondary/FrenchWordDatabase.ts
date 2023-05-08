@@ -283,4 +283,19 @@ export class FrenchWordDatabase extends Dexie implements IWordDatabase {
     stmt.free()
     return result
   }
+
+  public getSequenceOccurences(sequence: string): number {
+    const stmt = this.sqlDB.prepare('SELECT * FROM sequences WHERE sequence = :sequence LIMIT 1')
+    stmt.bind({
+      ':sequence': sequence
+    })
+    let result: number = -1
+    while (stmt.step()) {
+      const resultObject = stmt.getAsObject()
+      result = resultObject.occurences
+    }
+    // free the memory used by the statement
+    stmt.free()
+    return result
+  }
 }

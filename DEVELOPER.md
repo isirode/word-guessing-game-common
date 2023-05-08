@@ -24,6 +24,34 @@ I use Yarn for running the commands but you can use npm as well.
     - There are bugs with current implementation, I could be doing something wrong, or the library is not adapted to this usage ; could be nice to differentiate the implementation of the command and the arguments parsing
     - Use cmdy for instance
 
+- [ ] Languages
+  - [x] French
+  - [ ] English
+    - Study this databases
+    - [WordNet](https://wordnet.princeton.edu/)
+      - Seem complete
+        - But missing plurials, pronouns etc
+        - Not usable as a final version
+      - Open license
+    - [SCOWL](http://wordlist.aspell.net/)
+      - Hunspell
+      - Open license
+    - [Wiktionary](https://en.wiktionary.org/wiki/Wiktionary:Main_Page)
+      - Very complete
+        - Too complete
+      - Definitions
+      - Open license
+      - Dump : should be this https://dumps.wikimedia.org/enwiktionary/20230420/
+    - [OpenOffice](https://extensions.openoffice.org/en/project/english-dictionaries-apache-openoffice)
+      - Own dictionary
+      - It is close from what I did for the french dictionary
+    
+- [ ] Expressions
+
+- [ ] Citations
+
+- [ ] Anagrams
+
 ## TODO
 
 - [ ] WASM
