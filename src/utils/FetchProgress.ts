@@ -34,7 +34,8 @@ export class FetchProgress {
     if (response.body === null) {
       throw new Error('body of response is null');
     }
-
+    
+    console.log(`status: ${response.status} ${response.statusText}`);
     console.log('Headers : ' + JSON.stringify(response.headers));
     console.log(...response.headers);
     response.headers.forEach((value, key) => {
