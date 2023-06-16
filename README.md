@@ -26,6 +26,8 @@ Nothing here yet.
 
 Open the [DEVELOPER.md](./DEVELOPER.md) section.
 
+## License
+
 It is provided with the GNU LESSER GENERAL PUBLIC LICENSE.
 
 word-guesssing-game-common is a library containing classes for the word guessing game.

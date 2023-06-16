@@ -1,7 +1,7 @@
-import type { IWordDatabase, SupportedLanguages } from 'word-guessing-lib'
-import Dexie from 'dexie'
-import { FetchProgress, SimpleProgressCallback } from '../utils/FetchProgress'
-import { Logger } from '../commands/adapters/commander/XtermCommand'
+import type { IWordDatabase, SupportedLanguages } from 'word-guessing-lib';
+import Dexie from 'dexie';
+import { FetchProgress, Events } from 'fetch-progress';
+import { Logger } from '../commands/adapters/commander/XtermCommand';
 // TODO : it is not easily usable, find a solution when we have time for this
 // We cannot use the code as is
 // This is not possible for instance
@@ -10,6 +10,7 @@ import { Logger } from '../commands/adapters/commander/XtermCommand'
 // And the type code, not maintained by the provider of the lib, does not indicate how to use it
 // import initSqlJs, { Database } from 'sql.js'
 import { Database } from 'sql.js';
+import Emittery from 'emittery';
 
 const initSqlJs = require('sql.js');
 
@@ -104,20 +105,19 @@ export class WordDatabaseStore extends Dexie {
         this.logger.newLine();
         this.logger.writeLn('Progress: ');
         let lastProgressPerCent: number = 0;
-        const progressCallback: SimpleProgressCallback = {
-          callback: (contentLength: number | null, currentProgress: number, lastChunkLength: number) => {
-            if (contentLength === null) {
-              return;
-            }
-            const progressInPerCent = currentProgress / contentLength * 100;
-            if (progressInPerCent >= lastProgressPerCent + 10) {
-              this.logger.writeLn(progressInPerCent.toFixed() + ' %');
-              lastProgressPerCent += 10;
-            }
+        const fetchEvents = new Emittery<Events>();
+        fetchEvents.on('onProgress', ({contentLength, currentData, currentProgress, lastChunk}) => {
+          if (contentLength === null) {
+            return;
           }
-        }
-        const fetchProgress: FetchProgress = new FetchProgress(progressCallback);
-        const arrayFile = await fetchProgress.doFetch(fullUrl);
+          const progressInPerCent = currentProgress / contentLength * 100;
+          if (progressInPerCent >= lastProgressPerCent + 10) {
+            this.logger.writeLn(progressInPerCent.toFixed() + ' %');
+            lastProgressPerCent += 10;
+          }
+        });
+        const fetchProgress: FetchProgress = new FetchProgress(fetchEvents);
+        const arrayFile = await fetchProgress.fetch(fullUrl);
 
         if (arrayFile === null) {
           this.logger.error('Error: Database is null');
